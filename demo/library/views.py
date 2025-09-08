@@ -54,10 +54,8 @@ def edit_book(request, book_id):
     
 
 def books_by_category(request):
-    category = get_object_or_404(Category)
-    books = Book.objects.filter(category=category)
+    categories = Category.objects.all()
     context = {
-        "category": category,
-        "books": books
+        "categories": categories
     }
     return render(request, "categories.html", context=context)
