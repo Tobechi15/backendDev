@@ -1,0 +1,26 @@
+{%extends 'base.html' %}
+{% block content %}
+<div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+    <div class="flex justify-between my-1">
+        <span class="font-medium py-1">Trending Books</span>
+        <a href="{% url 'add_book' %}" class="flex items-center gap-3 px-2 py-1 font-light rounded-lg bg-white border border-slate-300
+                    hover:bg-black hover:text-white">
+            Add Book
+        </a>
+    </div>
+    <div class="flex gap-2">
+        {% for book in books %}
+        <div class="flex flex-col w-40 border border-slate-300 rounded-lg">
+            <img src="https://placehold.co/50x50" alt="">
+            <span>{{book.title}}</span>
+            <span>{{book.author}}</span>
+            <span>{{book.isbn}}</span>
+            <div class="flex justify-between p-1">
+                <span class="text-yellow-500">4.5</span>
+                <span>like</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
