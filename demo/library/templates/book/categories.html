@@ -10,12 +10,12 @@
             <span class="font-medium py-1">{{ cat.name }}</span>
         </div>
         <div class="flex gap-2 flex-wrap">
-            {% for book in cat.books.all %}
+            {% comment %} for book in cat.books.all[slice:":5"] will display only 5 books for that category {% endcomment %}
+            {% for book in cat.books.all|slice:":5" %}
             <div class="flex flex-col w-40 border border-slate-300 rounded-lg">
                 <img src="https://placehold.co/50x50" alt="">
                 <span>{{ book.title }}</span>
                 <span>{{ book.author }}</span>
-                <span>{{ book.isbn }}</span>
                 <div class="flex justify-between p-1">
                     <span class="text-yellow-500">4.5</span>
                     <span>like</span>
