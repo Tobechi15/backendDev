@@ -68,7 +68,7 @@
                 </a>
             </div>
             <div class="flex gap-2">
-                {% for book in books %}
+                {% for book in top_books %}
                 <div class="flex flex-1 flex-col border border-slate-500 rounded-lg gap-2 p-2 static">
                     {% if book.cover_image %}
                         <img src="{{ book.cover_image.url }}" class="size-44 shadow-xl rounded-lg" alt="{{ book.title }}">
@@ -77,19 +77,22 @@
                     {% endif %}
                     <span>{{ book.title }}</span>
                     <div class="flex justify-between p-1">
-                        <span class="text-yellow-500">4.5</span>
+                        <span class="text-yellow-500">⭐{{ book.rating }}</span>
                         <span>like</span>
                     </div>
                 </div>
+                {% empty %}
+                    <p>No Books available yet.</p>
                 {% endfor %}
             </div>
         </div>
+
 
         {% comment %} Top Authors Section {% endcomment %}
         <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
             <span class="font-medium py-1">Top Authors Read</span>
             <div class="flex flex-col gap-2">
-                {% for author in top_authors %}
+                {% for author in top_authors.all|slice:":4" %}
                 <div class="flex justify-between border border-slate-300 p-1 rounded-lg">
                     <img src="https://placehold.co/30x30" class="rounded-full my-1" alt="">
                     <span class="px-2 py-1">{{ author.author }}</span>
@@ -105,6 +108,11 @@
             </div>
         </div>
     </div>
+
+    {% comment %} <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+        <div></div>
+    </div> {% endcomment %}
+
     <!-- based on Your books -->
     <div class="flex flex-col flex-1 p-2 bg-white my-5 rounded-xl shadow-md">
         <span class="font-medium py-1">Based on books you read</span>

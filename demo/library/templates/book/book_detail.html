@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto p-4">
+    <!-- Book details -->
+    <img src="{{ book.cover_image.url }}" class="w-48 h-64 object-cover rounded-lg mb-4" alt="{{ book.title }}">
+    <h1 class="text-2xl font-bold">{{ book.title }}</h1>
+    <p class="text-gray-600">By {{ book.author }}</p>
+    <p class="mt-2">{{ book.description }}</p>
+    <p>{{ book.category }}</p>
+    <div class="flex items-center gap-2 mt-2">
+        <span class="text-yellow-500">⭐ {{ book.rating|floatformat:1 }}</span>
+        <span>({{ book.reviews.count }} reviews)</span>
+    </div>
+
+
+    <!-- Review form -->
+    {% comment %} {% if user.is_authenticated %}
+        <form method="post" class="mt-4 border p-3 rounded-lg">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Submit Review</button>
+        </form>
+    {% else %}
+        <p class="mt-4 text-red-500">You must be logged in to leave a review.</p>
+    {% endif %} {% endcomment %}
+
+    <!-- Reviews list -->
+    <div class="mt-6">
+        <h2 class="text-xl font-semibold">Reviews</h2>
+        {% for review in book.reviews.all %}
+            <div class="border-b py-2">
+                <p class="font-medium">{{ review.user.username }} - ⭐ {{ review.rating }}</p>
+                <p class="text-gray-700">{{ review.comment }}</p>
+                <small class="text-gray-500">{{ review.created_at|date:"M d, Y H:i" }}</small>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
