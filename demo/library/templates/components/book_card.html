@@ -21,7 +21,7 @@
 <a href="{% url 'book_detail' book.pk %}" 
     class="block hover:shadow-lg hover:scale-105 transition-transform duration-200">
     <div class="flex flex-col w-45 h-auto border border-slate-500 rounded-lg bg-white">
-        <img src="{{ book.cover_image.url|default:'https://placehold.co/50x50' }}" 
+        <img src="{{ book.cover_image.url | default:'https://placehold.co/50x50' }}" 
             alt="{{ book.title }}" 
             class="p-2 w-full h-48 shadow rounded-t-lg">
         <span class="px-2 font-semibold">{{ book.title }}</span>

@@ -90,7 +90,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(request, "library:book.html", {"book": Book.objects.all()}) # To redirect to the books page after adding a book
+            return redirect(request, "library:book/book.html", {"book": Book.objects.all()}) # To redirect to the books page after adding a book
         else:
             return render(request, "book/add_book.html", {"form":form})
     else:
