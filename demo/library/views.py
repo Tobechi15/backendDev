@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views.generic import DetailView
 from django.http import HttpResponse
 from django.db.models import Count, Q
@@ -90,7 +90,7 @@ def add_book(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(request, "library:book/book.html", {"book": Book.objects.all()}) # To redirect to the books page after adding a book
+            return redirect(reverse("book")) # To redirect to the books page after adding a book
         else:
             return render(request, "book/add_book.html", {"form":form})
     else:
