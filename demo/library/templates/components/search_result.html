@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Search Results for "{{ query }}"</h2>
+
+{% if book_results or category_results %}
+    {% if book_results %}
+        <h3>Books</h3>
+        <ul>
+            {% for book in book_results %}
+                <li>
+                    <a href="{% url 'book_detail' book.pk %}">
+                        {{ book.title }} by {{ book.author }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if category_results %}
+        <h3>Categories</h3>
+        <ul>
+            {% for category in category_results %}
+                <li>
+                    <a href="{% url 'category_detail' category.pk %}">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+
+
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% for category in categories %}
+  <section class="category-section">
+    <h2>{{ category.name }}</h2>
+    <div class="books">
+      {% for book in category.books.all %}
+        <div class="book-card">
+          <h3>{{ book.title }}</h3>
+          <p>by {{ book.author }}</p>
+        </div>
+      {% empty %}
+        <p>No books available in this category.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}

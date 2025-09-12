@@ -9,7 +9,7 @@
     </div>
 
     <div class="flex flex-col flex-1 space-y-4 p-4 bg-white rounded-lg w-2/3">
-        <form method="post" class="">
+        <form method="post" class="" action="{% url "add_book" %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button class="flex text-center justify-center my-2 px-2 py-1 w-full font-semibold rounded-lg bg-teal-500 border border-slate-300

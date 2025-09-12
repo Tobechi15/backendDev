@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load book_extras %}
+
 {% block content %}
 <div class="flex flex-col flex-1 p-2 gap-3 rounded-xl">
     <span class="text-2xl font-semibold">Category</span>
@@ -10,20 +12,13 @@
             <span class="font-medium py-1">{{ cat.name }}</span>
         </div>
         <div class="flex gap-2 flex-wrap">
-            {% for book in cat.books.all %}
-            <div class="flex flex-col w-40 border border-slate-300 rounded-lg">
-                <img src="https://placehold.co/50x50" alt="">
-                <span>{{ book.title }}</span>
-                <span>{{ book.author }}</span>
-                <span>{{ book.isbn }}</span>
-                <div class="flex justify-between p-1">
-                    <span class="text-yellow-500">4.5</span>
-                    <span>like</span>
-                </div>
-            </div>
+            {% comment %} for book in cat.books.all[slice:":5"] will display only 5 books for that category {% endcomment %}
+            {% for book in cat.books.all|slice:":5" %}
+                {% include "components/book_card.html" with book=book %}
             {% empty %}
-            <span class="text-gray-400">No books in this category</span>
+                <span class="text-gray-400">No books in this category</span>
             {% endfor %}
+
         </div>
     </div>
     {% endfor %}

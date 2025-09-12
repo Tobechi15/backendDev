@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Document</title>
+    <title>DEV Library</title>
 </head>
 
 <body>
     <div
         class="ml-54 flex justify-between items-center border-b p-2 px-4 border-b-slate-300 dark:border-b-slate-600 bg-white dark:bg-[#0d1117]">
-        <input type="search" class="p-2 bg-white w-1/3 rounded-md" placeholder="search" name="" id="">
+        <form method="get" action="{% url 'search' %}" class="p-2 bg-white  rounded-lg">
+            <input type="search" class="p-2 bg-white rounded-lg" placeholder="Search books, authors, categories..." name="q" id="">
+        </form>
         <div class="flex items-center justify-between gap-4">
             <button onClick="" class="p-2 text-white rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                 welcome, User
@@ -23,7 +25,7 @@
         class="md:w-54 fixed top-0 left-0 h-full z-40 bg-[#0d1117] text-white border border-slate-300 dark:border-slate-800 hover:shadow-lg transition-shadow border-r border-slate-300 dark:border-slate-700 p-2 transition-transform duration-300 ease-in-out ">
         <div class="flex flex-col justify-between h-full">
             <div class="flex flex-col">
-                <a onClick="" class="flex items-center gap-3 px-2 my-2 rounded-lg">
+                <a href="{% url "home" %}" class="flex items-center gap-3 px-2 my-2 rounded-lg">
                     <span class="font-bold text-2xl">My Library</span>
                 </a>
                 <hr class="border-gray-500 mx-[-8px] mb-4">
@@ -31,7 +33,7 @@
                 <a href="{% url 'category' %}" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Category</a>
                 <a href="{% url 'book' %}" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">My Books</a>
                 <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Favourite</a>
-                <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Overview</a>
+                <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Notification</a>
 
             </div>
             <div class="py-2  text-white">
@@ -66,6 +68,38 @@
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".read-more").forEach(button => {
+                button.addEventListener("click", function() {
+                    const container = this.closest("div");
+                    const shortText = container.querySelector(".short-text");
+                    const fullText = container.querySelector(".full-text");
+
+                    if (fullText.classList.contains("hidden")) {
+                        shortText.classList.add("hidden");
+                        fullText.classList.remove("hidden");
+                        requestAnimationFrame(() => {
+                            fullText.classList.remove("opacity-0");
+                        });
+                        this.textContent = "Read less";
+                    } else {
+                        shortText.classList.remove("hidden");
+                        fullText.classList.add("opacity-0");
+                        fullText.addEventListener("transitionend", () => {
+                            if (fullText.classList.contains("opacity-0")) {
+                                fullText.classList.add("hidden");
+                                shortText.classList.remove("hidden");
+                            }
+                        }, { once: true });
+                        this.textContent = "Read more";
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

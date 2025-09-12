@@ -1,0 +1,127 @@
+{%extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="">
+    <span class="text-2xl font-semibold">Overview</span>
+    <p class="text-gray-500">Here's an Overview of your dashboard</p>
+
+    <!-- cards -->
+    <div class="flex gap-3 my-2">
+        <div
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
+                    Total Books Read
+                </div>
+                <div class="text-slate-500">{icon}</div>
+            </div>
+            <div class="mt-4 text-xl font-semibold text-slate-800">
+                {value} Books in Total
+            </div>
+        </div>
+        <div
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
+                    Total Books Borrowed
+                </div>
+                <div class="text-slate-500">{icon}</div>
+            </div>
+            <div class="mt-4 text-xl font-semibold text-slate-800">
+                {value} Books in Total
+            </div>
+        </div>
+        <div
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
+                    Total Saved Books
+                </div>
+                <div class="text-slate-500">{icon}</div>
+            </div>
+            <div class="mt-4 text-xl font-semibold text-slate-800">
+                {value} Books in Total
+            </div>
+        </div>
+        <div
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
+                    You've spent
+                </div>
+                <div class="text-slate-500">{icon}</div>
+            </div>
+            <div class="mt-4 text-xl font-semibold text-slate-800">
+                {value} of reading so far
+            </div>
+        </div>
+    </div>
+    <!-- 2nd layer (Trending Books) -->
+    <div class="flex gap-3">
+        <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+            <div class="flex justify-between my-1">
+                <span class="font-medium py-1">Trending Books</span>
+                <a href="{% url "book" %}" class="flex items-center gap-3 px-2 py-1 font-light rounded-lg bg-white border border-slate-300
+                    hover:bg-black hover:text-white">
+                    See All
+                </a>
+            </div>
+            <div class="flex gap-2">
+                {% for book in top_books %}
+                <div class="flex flex-1 flex-col border border-slate-500 rounded-lg gap-2 p-2 static">
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" class="size-44 shadow-xl rounded-lg" alt="{{ book.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default_cover.png' %}" class="size-44 rounded-lg" alt="No cover">
+                    {% endif %}
+                    <span>{{ book.title }}</span>
+                    <div class="flex justify-between p-1">
+                        <span class="text-yellow-500">⭐{{ book.rating }}</span>
+                        <span>like</span>
+                    </div>
+                </div>
+                {% empty %}
+                    <p>No Books available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        {% comment %} Top Authors Section {% endcomment %}
+        <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+            <span class="font-medium py-1">Top Authors Read</span>
+            <div class="flex flex-col gap-2">
+                {% for author in top_authors.all|slice:":4" %}
+                <div class="flex justify-between border border-slate-300 p-1 rounded-lg">
+                    <img src="https://placehold.co/30x30" class="rounded-full my-1" alt="">
+                    <span class="px-2 py-1">{{ author.author }}</span>
+                    <span class="px-2 py-1">{{ author.category }}</span>
+                    <span class="px-2 py-1 text-gray-500">{{ item.count }} books</span>
+                    <a href="{% url 'books_by_author' author.author %}" 
+                    class="flex items-center gap-3 px-2 py-1 rounded-lg bg-teal-500
+                    hover:bg-teal-600 text-white">
+                        See Books
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% comment %} <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+        <div></div>
+    </div> {% endcomment %}
+
+    <!-- based on Your books -->
+    <div class="flex flex-col flex-1 p-2 bg-white my-5 rounded-xl shadow-md">
+        <span class="font-medium py-1">Based on books you read</span>
+        <div class="flex gap-4">
+            <div class="flex flex-1 flex-col border border-slate-300 rounded-lg">
+                <img src="https://placehold.co/50x50" alt="">
+                <span>Lorem ipsum </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

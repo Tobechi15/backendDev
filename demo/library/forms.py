@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book
+from .models import *
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -35,3 +35,13 @@ class BookForm(forms.ModelForm):
                 'placeholder': 'ISBN number'
             }),
         }
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["rating", "comment"]
+        widgets = {
+            "rating": forms.NumberInput(attrs={"min": 1, "max": 5}),
+            "comment": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your review..."}),
+        }
+
