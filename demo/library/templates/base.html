@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" 
+    rel="stylesheet">
     <title>DEV Library</title>
 </head>
 
@@ -40,11 +43,11 @@
                     <span class="font-bold text-2xl">My Library</span>
                 </a>
                 <hr class="border-gray-500 mx-[-8px] mb-4">
-                <a href="{% url 'home' %}"  class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 bg-white text-black">Overview</a>
+                <a href="{% url 'home' %}"  class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 bg-white text-black"><i class="fa-solid fa-house"></i>Overview</a>
                 <a href="{% url 'category' %}" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Category</a>
                 <a href="{% url 'book' %}" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">My Books</a>
                 <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Favourite</a>
-                <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black">Notification</a>
+                <a href="" class="flex items-center gap-3  px-4 py-2 rounded-lg mb-2 text-gray-500 hover:bg-black"><i class="fa-solid fa-bell"></i>Notification</a>
 
             </div>
             <div class="py-2  text-white">
