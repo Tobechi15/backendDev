@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views.generic import DetailView
 from django.http import HttpResponse
 from django.db.models import Count, Q, Sum
+from django.contrib import messages
 from collections import defaultdict
 from .models import *
 from .forms import *
@@ -21,7 +22,8 @@ def home(request):
 
     # total books per author
     top_authors = (
-        Book.objects.values("author")
+        Book.objects.values(
+            "author")
         .annotate(total_books=Count("id"))
         .order_by("-total_books")  # sort by popularity
     )
@@ -34,6 +36,7 @@ def home(request):
     context = {
         "books": books,
         "category": category,
+        "top_books": top_books,
         "top_authors": top_authors,
         "recommended_categories": recommended_categories,
         "most_read_books": most_read_books,
@@ -72,7 +75,6 @@ def search(request):
     return render(request, "components/search_result.html", context)
 
 def book(request):
-    model = book
     template_name = "book/book.html"
     books = Book.objects.all()
 
@@ -123,14 +125,6 @@ def available_books(request):
     books = Book.objects.filter(is_available=True)
     return render(request, "book/available_books.html", {"books": books})
 
-# def show_cat(request):
-#     model = book
-#     template_name = "categories.html"
-#     books = Book.objects.all()
-#     category = Category.objects.all()
-
-#     return render(request, template_name, {"books": books, "category":category})
-
 def show_books():
     pass
 
@@ -164,16 +158,6 @@ def books_by_category(request):
         "categories": categories
     }
     return render(request, "book/categories.html", context=context)
-
-
-# def books_by_author(request):
-#     books = Book.objects.select_related("category").all().order_by("author", "category__name")
-
-#     authors_data = defaultdict(lambda: defaultdict(list))
-#     for book in books:
-#         authors_data[book.author][book.category.name].append(book)
-
-#     return render(request, "book/books_by_author.html", {"authors_data": dict(authors_data)})
 
 def books_by_author_category(request, author, category):
     books = Book.objects.filter(author=author, category__name=category)
@@ -222,3 +206,5 @@ def return_book(request):
         form = ReturnBookForm()
 
     return render(request, "book/return_book.html", {"form": form})
+
+

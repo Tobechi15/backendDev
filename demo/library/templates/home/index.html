@@ -9,48 +9,52 @@
     <!-- cards -->
     <div class="flex gap-3 my-2">
         <div
-            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl 
+            shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
                     Total Books Read
                 </div>
-                <div class="text-slate-500">{icon}</div>
+                <div class="text-slate-500"><i class="fa-solid fa-book"></i></div>
             </div>
             <div class="mt-4 text-xl font-semibold text-slate-800">
                 {{ total_read }} Books in Total
             </div>
         </div>
         <div
-            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl 
+            shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
                     Total Books Borrowed
                 </div>
-                <div class="text-slate-500">{icon}</div>
+                <div class="text-slate-500"><i class="fa-solid fa-book-open-reader"></i></div>
             </div>
             <div class="mt-4 text-xl font-semibold text-slate-800">
                 {{ total_borrowed }} Books in Total
             </div>
         </div>
         <div
-            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl 
+            shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
                     Total Saved Books
                 </div>
-                <div class="text-slate-500">{icon}</div>
+                <div class="text-slate-500"><i class="fa-solid fa-bookmark"></i></div>
             </div>
             <div class="mt-4 text-xl font-semibold text-slate-800">
                 {value} Books in Total
             </div>
         </div>
         <div
-            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
+            class="flex flex-col justify-between flex-1 p-5 mb-4 rounded-xl 
+            shadow-md bg-white border border-slate-300 hover:shadow-lg transition-shadow">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-medium text-slate-500 tracking-wide uppercase">
                     You've spent
                 </div>
-                <div class="text-slate-500">{icon}</div>
+                <div class="text-slate-500"><i class="fa-solid fa-clock"></i></div>
             </div>
             <div class="mt-4 text-xl font-semibold text-slate-800">
                 {value} of reading so far
@@ -62,19 +66,20 @@
         <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
             <div class="flex justify-between my-1">
                 <span class="font-medium py-1">Trending Books</span>
-                <a href="{% url "book" %}" class="flex items-center gap-3 px-2 py-1 font-light rounded-lg bg-white border border-slate-300
+                <a href="{% url "book" %}" class="flex items-center gap-3 px-2 
+                    py-1 font-light rounded-lg bg-white border border-slate-300
                     hover:bg-black hover:text-white">
                     See All
                 </a>
             </div>
             <div class="flex gap-2">
-                {% for book in top_books %}
-                <div class="flex flex-1 flex-col border border-slate-500 rounded-lg gap-2 p-2 static">
-                    {% if book.cover_image %}
-                        <img src="{{ book.cover_image.url }}" class="size-44 shadow-xl rounded-lg" alt="{{ book.title }}">
-                    {% else %}
-                        <img src="{% static 'images/default_cover.png' %}" class="size-44 rounded-lg" alt="No cover">
-                    {% endif %}
+                {% for book in top_books|slice:":3" %}
+                <div class="flex flex-col w-45 border border-slate-500 rounded-lg gap-2 p-2 
+                    static block hover:shadow-lg hover:scale-105 transition-transform duration-200">
+                     <img src="{% if book.cover_image %}{{ book.cover_image.url }}
+                        {% else %}https://placehold.co/50x50{% endif %}" 
+                        alt="{{ book.title }}" 
+                        class="p-2 w-full h-48 shadow rounded-t-lg">
                     <span>{{ book.title }}</span>
                     <div class="flex justify-between p-1">
                         <span class="text-yellow-500">⭐{{ book.rating }}</span>
@@ -89,13 +94,13 @@
 
 
         {% comment %} Top Authors Section {% endcomment %}
-        <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
+        <div class="flex flex-col flex-1 p-3 bg-white rounded-xl shadow-md">
             <span class="font-medium py-1">Top Authors Read</span>
             <div class="flex flex-col gap-2">
-                {% for author in top_authors.all|slice:":4" %}
+                {% for author in top_authors.all|slice:":5" %}
                 <div class="flex justify-between border border-slate-300 p-1 rounded-lg">
                     <img src="https://placehold.co/30x30" class="rounded-full my-1" alt="">
-                    <span class="px-2 py-1">{{ author.author }}</span>
+                    <span class="px-2 py-1">{{ author.author|truncatechars:14 }}</span>
                     <span class="px-2 py-1">{{ author.category }}</span>
                     <span class="px-2 py-1 text-gray-500">{{ item.count }} books</span>
                     <a href="{% url 'books_by_author' author.author %}" 
@@ -108,10 +113,6 @@
             </div>
         </div>
     </div>
-
-    {% comment %} <div class="flex flex-col flex-1 p-2 bg-white rounded-xl shadow-md">
-        <div></div>
-    </div> {% endcomment %}
 
     <!-- based on Your books -->
     <div class="flex flex-col flex-1 p-2 bg-white my-5 rounded-xl shadow-md">
