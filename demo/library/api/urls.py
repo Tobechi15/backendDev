@@ -4,3 +4,6 @@ from .views import *
 router = DefaultRouter()
 router.register(r'category', CategoryAPI)
 
+urlpatterns = router.urls
+
+
