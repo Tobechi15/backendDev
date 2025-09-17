@@ -15,3 +15,9 @@ class ReviewForm(forms.ModelForm):
             "comment": forms.Textarea(attrs={"rows": 3, "placeholder": "Write your review..."}),
         }
 
+class BorrowBookForm(forms.Form):
+    member_id = forms.IntegerField(label="Member ID")
+    book_id = forms.IntegerField(label="Book ID")
+
+class ReturnBookForm(forms.Form):
+    record_id = forms.IntegerField(label="Borrow Record ID")

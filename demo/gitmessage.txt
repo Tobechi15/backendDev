@@ -1,0 +1,46 @@
+<type>(scope): <short, imperative summary of what you did>
+
+# ---------------------
+# Common types:
+# feat       - New feature (e.g., new model, billing logic)
+# fix        - Bug fix (e.g., invoice miscalculation)
+# docs       - Documentation updates (README, inline docs)
+# style      - Code formatting (e.g., Black, isort)
+# refactor   - Code restructuring without behavior changes
+# test       - Add or update tests (unit, integration)
+# chore      - Setup/config changes (env, settings, deps)
+# perf       - Performance improvements (e.g., query optimization)
+# ci         - CI/CD configuration (e.g., GitHub Actions, Docker build)
+
+# ---------------------
+# Common scopes (optional, choose relevant domain):
+# user, auth, template, plan, blog, invoice, payment,
+# webhook, dashboard, api, model, view, serializer,
+# utils, config, docs, db, admin, tests, deployment
+
+# ---------------------
+# Summary examples:
+# feat(subscription): add auto-renewal logic for active plans
+# fix(payment): resolve Stripe webhook signature mismatch
+# chore(config): add staging settings to settings module
+# refactor(view): clean up item view logic
+
+<Optional detailed body>
+
+# Use this section to describe:
+# - What was done
+# - Why it was needed
+# - Any design decisions or caveats
+
+# Example:
+# - Added plan expiration check in middleware
+# - Updated `is_active` check in User model
+# - Refactored invoice generation into a service class
+
+
+<Optional footer>
+
+# Examples:
+# Closes #12
+# Related to #9
+# BREAKING CHANGE: Renamed `` to ``

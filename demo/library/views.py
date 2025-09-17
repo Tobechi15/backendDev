@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views.generic import DetailView
 from django.http import HttpResponse
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from collections import defaultdict
 from .models import *
 from .forms import *
@@ -13,6 +13,11 @@ def home(request):
     books = Book.objects.all()
     category = Category.objects.all()
     top_books = get_top_trending_books(limit=5)
+    most_read_books = Book.objects.order_by("-read_count")[:5]
+
+    total_borrowed = BorrowRecord.objects.count()
+
+    total_read = BorrowRecord.objects.count() # Number of books borrowed (all time)
 
     # total books per author
     top_authors = (
@@ -21,10 +26,19 @@ def home(request):
         .order_by("-total_books")  # sort by popularity
     )
 
+    recommended_categories = (
+        Category.objects.annotate(total_reads=Sum("books__read_count"))
+        .filter(total_reads__gt=0)  # exclude categories with no reads
+        .order_by("-total_reads")[:5]
+    )
     context = {
         "books": books,
         "category": category,
         "top_authors": top_authors,
+        "recommended_categories": recommended_categories,
+        "most_read_books": most_read_books,
+        "total_borrowed": total_borrowed,
+        "total_read": total_read,
     }
     return render(request, template_name, context)
 
@@ -69,6 +83,14 @@ class BookDetailView(DetailView):
     template_name = "book/book_detail.html"
     context_object_name = "book"
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        # Increment reads only when user GETs the page, not on form POST
+        if self.request.method == "GET":
+            obj.reads = obj.read_count + 1
+            obj.save(update_fields=["read_count"])
+        return obj
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ReviewForm()
@@ -82,7 +104,7 @@ class BookDetailView(DetailView):
             review.book = self.object
             review.user = request.user
             review.save()
-            self.object.update_rating()
+            self.object.rating()
         return redirect("book_detail", pk=self.object.pk)
 
 def add_book(request):
@@ -97,6 +119,9 @@ def add_book(request):
         form = BookForm(request.POST)
     return render(request, "book/add_book.html", {"form":form})
 
+def available_books(request):
+    books = Book.objects.filter(is_available=True)
+    return render(request, "book/available_books.html", {"books": books})
 
 # def show_cat(request):
 #     model = book
@@ -158,3 +183,42 @@ def books_by_author(request, author):
     books = Book.objects.filter(author=author).select_related("category")
     return render(request, "book/author_books.html", {"books": books, "author": author})
 
+def borrow_book(request):
+    if request.method == "POST":
+        form = BorrowBookForm(request.POST)
+        if form.is_valid():
+            member_id = form.cleaned_data["member_id"]
+            book_id = form.cleaned_data["book_id"]
+
+            member = get_object_or_404(Member, id=member_id)
+            book = get_object_or_404(Book, id=book_id, is_available=True)
+
+            BorrowRecord.objects.create(member=member, book=book)
+            book.is_available = False
+            book.save()
+
+            messages.success(request, f"{member.name} borrowed {book.title}.")
+            return redirect("library:available_books")
+    else:
+        form = BorrowBookForm()
+
+    return render(request, "book/borrow_book.html", {"form": form})
+
+def return_book(request):
+    if request.method == "POST":
+        form = ReturnBookForm(request.POST)
+        if form.is_valid():
+            record_id = form.cleaned_data["record_id"]
+            record = get_object_or_404(BorrowRecord, id=record_id, returned_on__isnull=True)
+
+            record.returned_on = record.returned_on or record.borrowed_on
+            record.book.is_available = True
+            record.book.save()
+            record.save()
+
+            messages.success(request, f"{record.book.title} has been returned.")
+            return redirect("library:available_books")
+    else:
+        form = ReturnBookForm()
+
+    return render(request, "book/return_book.html", {"form": form})

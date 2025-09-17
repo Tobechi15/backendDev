@@ -1,0 +1,40 @@
+
+# installation of virtual enviroment
+python -m venv env
+
+# Activate the virtual enviroment
+env\scripts\Activate
+
+# installation of packages
+pip install Django
+
+# To store packages for production environment
+pip freeze > requirements.txt
+
+# To update the packages
+pur -r requirements.txt
+
+# Creation django project
+django-admin startproject <name of your project> .
+
+# Run migrations (Adding new mo)
+python manage.py makemigrations
+
+python manage.py migrate
+
+# Create django app
+python manage.py startapp <name of the app ypu want>
+
+#To run Django server
+python manage.py runserver
+
+
+# Create SuperUser for the admin page
+python manage.py createsuperuser
+
+# To auto generate models from an external database in side our app
+py -m manage inspectdb --database=<db name> > <appname>\models.py
+
+
+To update our requirements.txt file
+pur -r requirements.txt
