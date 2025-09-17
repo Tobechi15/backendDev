@@ -57,6 +57,14 @@ class Book(models.Model):
     def average_rating(self):
         ratings = self.reviews.all().values_list("rating", flat=True)
         return round(sum(ratings) / len(ratings), 1) if ratings else 0
+
+    def update_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            self.rating = sum(r.rating for r in reviews) / reviews.count()
+        else:
+            self.rating = 0
+        self.save()
     
     def __str__(self):
         return f"{self.title} by {self.author}"

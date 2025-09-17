@@ -5,12 +5,8 @@
 {% block content %}
     <h2 class="text-xl font-bold mb-4">Books by {{ author }}</h2>
     <div class="grid grid-cols-4 gap-4">
-    {% for book in books %}
-        <div class="border p-2 rounded">
-        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="w-32 h-40 object-cover">
-        <p class="font-bold">{{ book.title }}</p>
-        <p class="text-xs text-gray-500">{{ book.category.name }}</p>
-        </div>
+    {% for book in books_by_author %}
+        {% include "components/book_card.html" with book=book %}
     {% empty %}
         <p>No books found for this author.</p>
     {% endfor %}
