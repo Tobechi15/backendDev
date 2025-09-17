@@ -10,7 +10,7 @@
             Add Book
         </a>
     </div>
-    <div class="flex gap-2 overflow-x-auto">
+    <div class="grid grid-cols-5 gap-2 overflow-x-auto">
         {% for book in books %}
             {% include "components/book_card.html" with book=book %}
         {% endfor %}
