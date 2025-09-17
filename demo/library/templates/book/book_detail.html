@@ -16,7 +16,7 @@
 
 
     <!-- Review form -->
-    {% comment %} {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
         <form method="post" class="mt-4 border p-3 rounded-lg">
             {% csrf_token %}
             {{ form.as_p }}
@@ -24,7 +24,7 @@
         </form>
     {% else %}
         <p class="mt-4 text-red-500">You must be logged in to leave a review.</p>
-    {% endif %} {% endcomment %}
+    {% endif %}
 
     <!-- Reviews list -->
     <div class="mt-6">
