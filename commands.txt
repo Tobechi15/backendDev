@@ -38,3 +38,11 @@ py -m manage inspectdb --database=<db name> > <appname>\models.py
 
 To update our requirements.txt file
 pur -r requirements.txt
+
+# To build our api we will need to install these packages
+pip install django djangorestframework djangorestframework-simplejwt django-filter drf-yasg
+pip install psycopg2-binary celery redis django-cors-headers
+pip install django-rest-framework-simplejwt
+pip install weasyprint openpyxl xlsxwriter  # exports
+pip install django-environ django-storages[boto3]  # optional: S3 storage
+pip install django-extensions, django-axes (security), django-admin-charts or chart libs, django-import-export
